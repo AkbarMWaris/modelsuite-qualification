@@ -38,13 +38,15 @@ const getTaskById = async (req, res) => {
 // @route POST /api/tasks
 // @access Admin
 const createTask = async (req, res) => {
-  const { title, description, status, assignedTo, dueDate } = req.body;
+  const { title, description, status, category, bounty, assignedTo, dueDate } = req.body;
 
   try {
     const task = await Task.create({
       title,
       description,
       status,
+      category,
+      bounty,
       assignedTo: assignedTo || null,
       dueDate,
       createdBy: req.user._id,

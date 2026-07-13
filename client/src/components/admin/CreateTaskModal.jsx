@@ -1,5 +1,6 @@
 ﻿import { useState } from 'react';
 import { createTask, fetchTalents } from '../../api/tasks';
+import { TASK_CATEGORIES } from '../../utils/taskCategories';
 
 const STATUS_OPTIONS = ['Open', 'Claimed', 'Submitted', 'Approved', 'Rejected'];
 
@@ -7,7 +8,7 @@ const inputCls  = 'w-full bg-bg-input border border-border rounded-lg px-3.5 py-
 const labelCls  = 'text-[11px] font-semibold uppercase tracking-[0.5px] text-text-muted';
 
 const CreateTaskModal = ({ onClose, onCreated }) => {
-  const [form, setForm] = useState({ title: '', description: '', status: 'Open', assignedTo: '', dueDate: '' });
+  const [form, setForm] = useState({ title: '', description: '', status: 'Open', category: 'Other', bounty: '', assignedTo: '', dueDate: '' });
   const [talents, setTalents] = useState([]);
   const [loadingTalents, setLoadingTalents] = useState(false);
   useState(() => {
@@ -23,7 +24,10 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await createTask({ ...form, assignedTo: form.assignedTo || undefined });
+    const { data } = await createTask({
+      ...form,
+      bounty: form.bounty ? Number(form.bounty) : 0,
+      assignedTo: form.assignedTo || undefined, });
       onCreated(data);
       onClose();
     } catch (err) {
@@ -71,6 +75,20 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
               <label className={labelCls}>Due Date</label>
               
               <input type="date" name="dueDate" value={form.dueDate} onChange={handleChange} className={inputCls} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className={labelCls}>Category</label>
+              <select name="category" value={form.category} onChange={handleChange}
+                 className={`${inputCls} custom-select cursor-pointer`}>
+                 {TASK_CATEGORIES.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}
+              </select>
+            </div>
+            <div className="flex flex-col gap-1.5">
+             <label className={labelCls}>Reward Points</label>
+             <input type="number" min="0" name="bounty" value={form.bounty} onChange={handleChange} placeholder="e.g. 150" className={inputCls} />
             </div>
           </div>
 

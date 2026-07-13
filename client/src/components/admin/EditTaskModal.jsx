@@ -1,5 +1,6 @@
 ﻿import { useState } from 'react';
 import { updateTask, fetchTalents } from '../../api/tasks';
+import { TASK_CATEGORIES } from '../../utils/taskCategories';
 
 const STATUS_OPTIONS = ['Open', 'Claimed', 'Submitted', 'Approved', 'Rejected'];
 const inputCls = 'w-full bg-bg-input border border-border rounded-lg px-3.5 py-2.5 text-sm text-text-primary outline-none placeholder:text-[#4e4a6e] focus:border-primary focus:ring-[3px] focus:ring-primary/15 transition-all font-sans resize-y';
@@ -10,6 +11,8 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
     title:       task.title       || '',
     description: task.description || '',
     status:      task.status      || 'Open',
+    category: task.category || 'Other',
+    bounty:      task.bounty      || '',
     assignedTo:  task.assignedTo?._id || '',
     dueDate:     task.dueDate     || '',
   });
@@ -20,11 +23,14 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
   }, []);
 
   const handleChange = (e) => setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await updateTask(task._id, { ...form, assignedTo: form.assignedTo || null });
+    const { data } = await updateTask(task._id, {
+      ...form,
+      bounty: form.bounty ? Number(form.bounty) : 0,
+      assignedTo: form.assignedTo || null,
+    });
       onUpdated(data);
       onClose();
     } catch (err) {
@@ -32,7 +38,7 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
     }
   };
 
-  return (
+return (
     <div className="fixed inset-0 bg-black/65 backdrop-blur-sm flex items-center justify-center z-[200] p-6"
       onClick={onClose}>
       <div className="bg-bg-card border border-border rounded-xl w-full max-w-xl shadow-[0_32px_80px_rgba(0,0,0,0.6)] animate-modal-in"
@@ -66,6 +72,20 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
             <div className="flex flex-col gap-1.5">
               <label className={labelCls}>Due Date</label>
               <input type="date" name="dueDate" value={form.dueDate} onChange={handleChange} className={inputCls} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className={labelCls}>Category</label>
+              <select name="category" value={form.category} onChange={handleChange}
+                 className={`${inputCls} custom-select cursor-pointer`}>
+                {TASK_CATEGORIES.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}
+              </select>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className={labelCls}>Reward Points</label>
+              <input type="number" min="0" name="bounty" value={form.bounty} onChange={handleChange}  placeholder="e.g. 150" className={inputCls} />
             </div>
           </div>
 

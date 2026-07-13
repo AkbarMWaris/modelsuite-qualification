@@ -1,4 +1,5 @@
 ﻿import { claimTask } from '../../api/talent';
+import { getCategoryMeta } from '../../utils/taskCategories';
 
 const STATUS_CLASS = {
   Open:      'status-badge-Open',
@@ -8,7 +9,28 @@ const STATUS_CLASS = {
   Rejected:  'status-badge-Rejected',
 };
 
+const IconBounty = (props) => (
+  <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M10 2l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z" />
+  </svg>
+);
+
+const IconCalendar = (props) => (
+  <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect x="3" y="4" width="14" height="14" rx="2"/>
+    <path d="M7 2v4M13 2v4M3 9h14"/>
+  </svg>
+);
+
+const IconArrow = (props) => (
+  <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M4 10h12M11 5l5 5-5 5" />
+  </svg>
+);
+
 const TaskCard = ({ task, showClaimButton = false, onClaimed }) => {
+  const category = getCategoryMeta(task.category);
+  const { Icon: CategoryIcon } = category;
 
   const handleClaim = async () => {
     try {
@@ -20,28 +42,49 @@ const TaskCard = ({ task, showClaimButton = false, onClaimed }) => {
   };
 
   return (
-    <div className="bg-bg-card border border-border rounded-xl p-5 flex flex-col gap-3 hover:border-border-light hover:-translate-y-0.5 transition-all cursor-default">
+    <div className="task-marketplace-card" style={{ '--card-accent': category.color }}>
 
-      {/* Header: title + status */}
-      <div className="flex items-start justify-between gap-2.5">
-        <p className="text-[15px] font-semibold text-text-primary leading-snug">{task.title || 'Untitled Task'}</p>
-        {task.status && (
-          <span className={`shrink-0 inline-block px-2.5 py-[3px] rounded-full text-[11px] font-semibold tracking-[0.3px] ${STATUS_CLASS[task.status] || ''}`}>
-            {task.status}
+      {/* Header: category pill + bounty tag */}
+      <div className="flex items-center justify-between gap-2">
+        <span className="task-category-pill">
+          <CategoryIcon width={12} height={12} />
+          {category.label}
+        </span>
+
+        {task.bounty > 0 && (
+          <span className="task-bounty-tag">
+            <IconBounty />
+            {task.bounty} pts
           </span>
         )}
       </div>
 
-      
+      {/* Title */}
+      <p className="font-display text-[16px] font-semibold leading-snug text-text-primary"
+        style={{ fontFamily: 'Poppins, sans-serif' }}>
+        {task.title || 'Untitled Task'}
+      </p>
+
+      {/* Description — clamped to 2 lines so cards stay uniform in the grid */}
       {task.description && (
-        <p className="text-[13px] text-text-muted leading-relaxed">{task.description}</p>
+        <p className="text-[13px] text-text-muted leading-relaxed"
+          style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          {task.description}
+        </p>
+      )}
+
+      {/* Status badge, shown only when the card isn't in the claimable marketplace grid */}
+      {!showClaimButton && task.status && (
+        <span className={`self-start inline-block px-2.5 py-[3px] rounded-full text-[11px] font-semibold tracking-[0.3px] ${STATUS_CLASS[task.status] || ''}`}>
+          {task.status}
+        </span>
       )}
 
       {/* Meta row */}
-      <div className="flex items-center justify-between flex-wrap gap-2 mt-auto">
-        
-        <span className="text-[12px] text-text-faint">
-          {task.dueDate ? `Due: ${task.dueDate}` : 'No due date'}
+      <div className="flex items-center justify-between flex-wrap gap-2 mt-auto pt-1">
+        <span className="flex items-center gap-1.5 text-[12px] text-text-faint">
+          <IconCalendar />
+          {task.dueDate ? task.dueDate : 'No due date'}
         </span>
         {task.createdBy?.name && (
           <span className="text-[12px] text-text-faint">By {task.createdBy.name}</span>
@@ -49,9 +92,9 @@ const TaskCard = ({ task, showClaimButton = false, onClaimed }) => {
       </div>
 
       {showClaimButton && (
-        <button onClick={handleClaim}
-          className="w-full py-2.5 rounded-lg border-none text-[13px] font-semibold text-white cursor-pointer btn-gradient font-sans mt-1">
-          Claim Task →
+        <button onClick={handleClaim} className="claim-btn flex items-center justify-center gap-1.5">
+          Claim Task
+          <IconArrow />
         </button>
       )}
     </div>

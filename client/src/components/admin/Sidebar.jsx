@@ -52,8 +52,8 @@ const Sidebar = () => {
   const location  = useLocation();
 
   return (
-    <aside className="fixed inset-y-0 left-0 w-[240px] flex flex-col z-50"
-      style={{ background: '#0D0D0D' }}>
+    <aside className="fixed inset-y-0 left-0 w-[240px] flex flex-col z-50 border-r border-border"
+      style={{ background: 'var(--bg-surface)' }}>
 
       {/* Brand */}
       <div className="flex items-center justify-center px-5 py-6">
@@ -65,7 +65,7 @@ const Sidebar = () => {
       {/* Nav */}
       <nav className="flex flex-col gap-0.5 flex-1 px-3 pt-5">
         <p className="text-[9.5px] font-semibold uppercase tracking-[0.12em] px-2 mb-2"
-          style={{ color: 'rgba(255,255,255,0.25)', fontFamily: 'Inter, sans-serif' }}>
+          style={{ color: 'var(--text-faint)', fontFamily: 'Inter, sans-serif' }}>
           Menu
         </p>
 
@@ -85,6 +85,10 @@ const Sidebar = () => {
       {/* Footer */}
       <div className="px-3 pb-5">
         <div className="sidebar-divider mb-4" />
+
+       
+        <div className="sidebar-divider mb-4" />
+
         <div className="flex items-center justify-between gap-2 px-1">
           <div className="flex items-center gap-2.5 min-w-0">
             <div className="w-8 h-8 rounded-full avatar-admin flex items-center justify-center text-[12px] font-bold text-white shrink-0">
@@ -92,10 +96,10 @@ const Sidebar = () => {
             </div>
             <div className="min-w-0">
               <p className="text-[13px] font-semibold truncate max-w-[110px]"
-                style={{ color: '#E5E2E1', fontFamily: 'Inter, sans-serif' }}>
+                style={{ color: 'var(--text-secondary)', fontFamily: 'Inter, sans-serif' }}>
                 {user?.name}
               </p>
-              <p className="text-[11px]" style={{ color: '#4B5563' }}>Admin</p>
+              <p className="text-[11px]" style={{ color: 'var(--text-muted)' }}>Admin</p>
             </div>
           </div>
 

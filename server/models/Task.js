@@ -11,6 +11,15 @@ const taskSchema = new mongoose.Schema(
       type: String,
       enum: ['Open', 'Claimed', 'Submitted', 'Approved', 'Rejected'],
     },
+    category: {
+      type: String,
+      enum: ['Design', 'Development', 'Writing', 'Video', 'Marketing', 'Other'],
+      default: 'Other',
+},
+    bounty: {
+      type: Number,
+      default: 0,
+},
     assignedTo: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

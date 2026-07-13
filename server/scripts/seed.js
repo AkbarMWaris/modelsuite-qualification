@@ -48,6 +48,8 @@ const seedData = async () => {
       description:
         'Deliver a full brand kit including logo variants, color palette, and typography guide. Export as a shareable Figma link.',
       status: 'Open',
+      category: 'Design',
+      bounty: 180,
       assignedTo: talent1._id,
       dueDate: '2024-06-15',
       createdBy: admin._id,
@@ -57,6 +59,8 @@ const seedData = async () => {
       description:
         'Research competitors in the SaaS talent space and produce a 5-page report with key findings and recommendations.',
       status: 'Claimed',
+      category: 'Writing',
+      bounty: 120,
       assignedTo: talent1._id,
       dueDate: '2024-06-20',
       createdBy: admin._id,
@@ -66,6 +70,8 @@ const seedData = async () => {
       description:
         'Create a 3-part video series (max 5 min each) walking new talents through the platform features.',
       status: 'Submitted',
+      category: 'Video',
+      bounty: 220,
       assignedTo: talent2._id,
       dueDate: '2024-06-10',
       createdBy: admin._id,
@@ -74,6 +80,8 @@ const seedData = async () => {
       title: 'Social Media Content Calendar',
       description:
         'Plan and draft 30 days of social content across LinkedIn, Twitter, and Instagram for the talent portal launch.',
+      category: 'Marketing',
+      bounty: 90,
       assignedTo: talent2._id,
       dueDate: '2024-07-01',
       createdBy: admin._id,
@@ -83,6 +91,8 @@ const seedData = async () => {
       description:
         'Write compelling hero copy, feature descriptions, and CTAs for the new landing page. Deliver as a Google Doc.',
       status: 'Open',
+      category: 'Writing',
+      bounty: 100,
       dueDate: '2024-06-28',
       createdBy: admin._id,
     },
