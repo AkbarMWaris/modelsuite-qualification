@@ -29,6 +29,7 @@ const registerUser = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      avatarUrl: user.avatarUrl,
       token: generateToken(user._id, user.role),
     });
   } catch (error) {
@@ -51,10 +52,10 @@ const loginUser = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        avatarUrl: user.avatarUrl,
         token: generateToken(user._id, user.role),
       });
     } else {
-      // — less secure but also unhelpful UX
       res.status(401).json({ message: 'Invalid email or password' });
     }
   } catch (error) {
@@ -62,4 +63,35 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+// @desc  Upload/replace the logged-in user's avatar image
+// @route PUT /api/auth/avatar
+// @access Private (any authenticated user)
+const updateAvatar = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No image file was uploaded' });
+    }
+
+    // Same pattern used for task-submission uploads: multer saves the file to
+    // disk, and we store the public /uploads URL that serves it back.
+    const avatarUrl = `http://localhost:5000/uploads/${req.file.filename}`;
+
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { avatarUrl },
+      { new: true }
+    ).select('-password');
+
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      avatarUrl: user.avatarUrl,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { registerUser, loginUser, updateAvatar };

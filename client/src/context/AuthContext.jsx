@@ -3,7 +3,6 @@
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  // — if token is expired, user stays "logged in" until a request fails
   const [user, setUser] = useState(() => {
     const stored = localStorage.getItem('user');
     return stored ? JSON.parse(stored) : null;
@@ -14,13 +13,23 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
   };
 
+  // Merge partial updates (e.g. a new avatarUrl) into the current user
+  // and keep localStorage in sync, so a page refresh doesn't lose it.
+  const updateUser = (partialUpdate) => {
+    setUser((prev) => {
+      const next = { ...prev, ...partialUpdate };
+      localStorage.setItem('user', JSON.stringify(next));
+      return next;
+    });
+  };
+
   const logout = () => {
     localStorage.removeItem('user');
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, updateUser, logout }}>
       {children}
     </AuthContext.Provider>
   );
