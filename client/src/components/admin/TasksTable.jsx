@@ -62,8 +62,9 @@ const TasksTable = ({ tasks, onEdit, onRefresh }) => {
       <table className="w-full border-collapse" style={{ fontSize: '13.5px', tableLayout: 'fixed' }}>
         <thead>
           <tr>
-            <th className="table-th" style={{ width: '30%' }}>Title</th>
+            <th className="table-th" style={{ width: '20%' }}>Title</th>
             <th className="table-th" style={{ width: '12%' }}>Status</th>
+            <th className="table-th" style={{ width: '10%' }}>Reward</th>
             <th className="table-th" style={{ width: '18%' }}>Assigned To</th>
             <th className="table-th" style={{ width: '13%' }}>Due Date</th>
             <th className="table-th" style={{ width: '13%' }}>Created</th>
