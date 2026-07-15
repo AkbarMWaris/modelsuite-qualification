@@ -18,11 +18,17 @@ const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(8);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // Optional — if the person picked a photo on the register form, multer
+    // will have already saved it to disk and given us the file here.
+    const avatarUrl = req.file ? `http://localhost:5000/uploads/${req.file.filename}` : '';
+
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
-      role,    });
+      role,
+      avatarUrl,
+    });
 
     res.status(201).json({
       _id: user._id,
@@ -36,6 +42,7 @@ const registerUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // @desc  Login user
 // @route POST /api/auth/login

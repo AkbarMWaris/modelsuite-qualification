@@ -4,8 +4,7 @@ const { registerUser, loginUser, updateAvatar } = require('../controllers/authCo
 const { protect } = require('../middleware/authMiddleware');
 const upload = require('../middleware/upload');
 
-router.post('/register', registerUser);
-router.post('/login', loginUser);
+router.post('/register', upload.single('avatar'), registerUser);router.post('/login', loginUser);
 router.put('/avatar', protect, upload.single('avatar'), updateAvatar);
 
 module.exports = router;

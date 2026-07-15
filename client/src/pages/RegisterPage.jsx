@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import API from '../api/axios';
+import AvatarPicker from '../components/common/AvatarPicker';
 
 const Logo = () => (
   <img src="/modelsuite-talents.png" alt="ModelSuite Talents Logo" className="w-80 h-auto object-contain mx-auto block hover:scale-105 transition-transform duration-300" />
@@ -15,13 +16,37 @@ const RegisterPage = () => {
   const [email, setEmail]     = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole]       = useState('Talent');
+  const [avatarFile, setAvatarFile] = useState(null);
   const { login }  = useAuth();
   const navigate   = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await API.post('/auth/register', { name, email, password, role });
+      let data;
+
+      if (avatarFile) {
+        // A photo was chosen — send everything as multipart/form-data so
+        // the file can ride along with the rest of the form in one request.
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('role', role);
+        formData.append('avatar', avatarFile);
+
+        const res = await API.post('/auth/register', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        data = res.data;
+      } else {
+        // No photo chosen — keep the simple plain-JSON request, unchanged
+        // from before. The account is created with no avatarUrl, and the
+        // Avatar component will show initials everywhere instead.
+        const res = await API.post('/auth/register', { name, email, password, role });
+        data = res.data;
+      }
+
       login(data);
       data.role === 'Admin' ? navigate('/admin/dashboard') : navigate('/talent/dashboard');
     } catch (err) {
@@ -42,6 +67,9 @@ const RegisterPage = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 relative z-10 animate-fade-slide" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
+          <div className="flex justify-center mb-1">
+            <AvatarPicker name={name} file={avatarFile} onFileSelect={setAvatarFile} size={72} />
+          </div>
           <div className="flex flex-col gap-2 group">
             <label className={labelCls} htmlFor="name">Full Name</label>
             <input id="name" type="text" placeholder="Jane Doe"

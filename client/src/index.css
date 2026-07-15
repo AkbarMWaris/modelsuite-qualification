@@ -257,6 +257,31 @@ body {
   border-top-color: var(--color-primary);
   animation: spin 0.7s linear infinite;
 }
+
+/* Small "x" badge to clear a chosen (but not-yet-uploaded) avatar preview */
+.avatar-picker-remove {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #EF4444;
+  color: #ffffff;
+  border: 1.5px solid var(--bg-card);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.15s ease-out, background 0.15s ease-out;
+}
+.avatar-picker-remove:hover {
+  background: #DC2626;
+  transform: scale(1.1);
+}
+
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
@@ -614,7 +639,8 @@ body {
   box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
 }
 
-.task-marketplace-card .claim-btn {
+
+.claim-btn {
   width: 100%;
   padding: 10px;
   border-radius: 10px;
@@ -627,13 +653,18 @@ body {
   background: var(--card-accent, #3B82F6);
   transition: filter 0.15s ease-out, transform 0.15s ease-out;
 }
-.task-marketplace-card .claim-btn:hover {
+.claim-btn:hover {
   filter: brightness(1.1);
   transform: translateY(-1px);
 }
-.task-marketplace-card .claim-btn:active {
+.claim-btn:active {
   transform: translateY(0);
   filter: brightness(0.95);
+}
+.claim-btn:disabled {
+  cursor: not-allowed;
+  transform: none !important;
+  filter: none !important;
 }
 
 /* ─────────────────────────────────────────
