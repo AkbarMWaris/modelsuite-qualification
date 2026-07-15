@@ -35,7 +35,7 @@ const fmtDate = (raw) => {
   } catch { return raw; }
 };
 
-const MyTasksList = ({ tasks, onRefresh }) => {
+const MyTasksList = ({ tasks, onRefresh, emptyMessage }) => {
   const [submitTarget, setSubmitTarget] = useState(null);
 
   if (!tasks || tasks.length === 0) {
@@ -53,7 +53,7 @@ const MyTasksList = ({ tasks, onRefresh }) => {
           <rect x="3" y="3" width="18" height="18" rx="3"/>
           <path d="M9 12l2 2 4-4"/>
         </svg>
-        You haven&apos;t claimed any tasks yet. Go grab one above!
+        {emptyMessage || <>You haven&apos;t claimed any tasks yet. Go grab one above!</>}
       </div>
     );
   }

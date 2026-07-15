@@ -10,6 +10,16 @@ const REVIEW_STATUS_CLASS = {
   Rejected: 'status-badge-Rejected',
 };
 
+const fmtDate = (raw) => {
+  if (!raw) return '—';
+  try {
+    const d = new Date(raw);
+    if (isNaN(d)) return raw;
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) +
+      ' · ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  } catch { return raw; }
+};
+
 const SubmissionsPage = () => {
   const [submissions, setSubmissions] = useState([]);
   const [reviewTarget, setReviewTarget] = useState(null);
@@ -102,7 +112,7 @@ const SubmissionsPage = () => {
                       {/* Talent */}
                       <td className={`${tdCls} whitespace-nowrap`}>
                         <div className="flex items-center gap-2">
-                          <Avatar name={sub.talentId?.name} src={sub.talentId?.avatarUrl} size={26} fontSize={11} />
+                          <Avatar name={sub.talentId?.name || '?'} src={sub.talentId?.avatarUrl} size={26} fontSize={11} />
                           <span className="text-text-primary">{sub.talentId?.name || '—'}</span>
                         </div>
                       </td>
@@ -127,9 +137,9 @@ const SubmissionsPage = () => {
                         )}
                       </td>
 
-                      {/* Submitted at — raw ISO */}
+                      {/* Submitted at */}
                       <td className={`${tdCls} text-text-muted text-[13px] whitespace-nowrap`}>
-                        {sub.createdAt}
+                        {fmtDate(sub.createdAt)}
                       </td>
 
                       {/* Review status */}

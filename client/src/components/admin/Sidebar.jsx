@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import AvatarUploader from '../common/AvatarUploader';
+import { isNavActive } from '../../utils/isNavActive';
 
 /* ── Clean SVG line-art icons (no emojis, no AI icons) ── */
 const IconDashboard = () => (
@@ -71,7 +72,7 @@ const Sidebar = () => {
         </p>
 
         {navItems.map(({ label, path, Icon }) => {
-          const isActive = location.pathname === path;
+          const isActive = isNavActive(location.pathname, path);
           return (
             <button key={path}
               onClick={() => navigate(path)}

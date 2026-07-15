@@ -49,7 +49,7 @@ const submitTask = async (req, res) => {
 const getSubmission = async (req, res) => {
   try {
     const submission = await Submission.findOne({ taskId: req.params.taskId })
-      .populate('talentId', 'name email');
+      .populate('talentId', 'name email avatarUrl');
 
     if (!submission) {
       return res.status(404).json({ message: 'No submission found for this task' });
@@ -68,7 +68,7 @@ const getAllSubmissions = async (req, res) => {
   try {
     const submissions = await Submission.find({})
       .populate('taskId', 'title dueDate status')
-      .populate('talentId', 'name email')
+      .populate('talentId', 'name email avatarUrl')
       .sort({ createdAt: -1 });
 
     res.json(submissions);
@@ -91,7 +91,7 @@ const reviewSubmission = async (req, res) => {
       { new: true }
     )
       .populate('taskId', 'title status')
-      .populate('talentId', 'name email');
+      .populate('talentId', 'name email avatarUrl');
 
     if (!submission) {
       return res.status(404).json({ message: 'Submission not found' });

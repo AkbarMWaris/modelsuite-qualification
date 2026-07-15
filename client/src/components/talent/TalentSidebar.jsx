@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import AvatarUploader from '../common/AvatarUploader';
+import { isNavActive } from '../../utils/isNavActive';
 
 /* ── Clean SVG line-art icons ── */
 const IconDashboard = () => (
@@ -55,7 +56,7 @@ const TalentSidebar = () => {
         </p>
 
         {navItems.map(({ label, path, Icon }) => {
-          const isActive = location.pathname === path;
+          const isActive = isNavActive(location.pathname, path);
           return (
             <button key={path}
               onClick={() => navigate(path)}
@@ -71,11 +72,13 @@ const TalentSidebar = () => {
       <div className="px-3 pb-5">
         <div className="sidebar-divider mb-4" />
 
+        
         <div className="sidebar-divider mb-4" />
 
         <div className="flex items-center justify-between gap-2 px-1">
           <div className="flex items-center gap-2.5 min-w-0">
-              <AvatarUploader size={32} />            <div className="min-w-0">
+            <AvatarUploader size={32} />
+            <div className="min-w-0">
               <p className="text-[13px] font-semibold truncate max-w-[100px]"
                 style={{ color: 'var(--text-secondary)', fontFamily: 'Inter, sans-serif' }}>
                 {user?.name}

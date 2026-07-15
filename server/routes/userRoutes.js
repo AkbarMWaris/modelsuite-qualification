@@ -8,7 +8,7 @@ const { protect, adminOnly } = require('../middleware/authMiddleware');
 // @access Admin
 router.get('/talents', protect, adminOnly, async (req, res) => {
   try {
-    const talents = await User.find({ role: 'Talent' });
+    const talents = await User.find({ role: 'Talent' }).select('-password');
     res.json(talents);
   } catch (error) {
     res.status(500).json({ message: error.message });

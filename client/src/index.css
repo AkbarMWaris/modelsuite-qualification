@@ -81,17 +81,6 @@
 
 
 /* ─────────────────────────────────────────
-   Global floating theme toggle (mounted once in App.jsx,
-   visible on every route regardless of layout)
-───────────────────────────────────────── */
-.app-global-theme-toggle {
-  position: fixed;
-  top: 5px;
-  right: 15px;
-  z-index: 1000;
-}
-
-/* ─────────────────────────────────────────
    Base
 ───────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
@@ -753,6 +742,17 @@ input, select, textarea {
 .surface-elevated:hover {
   border-color: var(--border-light);
   box-shadow: var(--shadow-glow);
+}
+
+/* ─────────────────────────────────────────
+   Global floating theme toggle (mounted once in App.jsx,
+   visible on every route regardless of layout)
+───────────────────────────────────────── */
+.app-global-theme-toggle {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  z-index: 1000;
 }
 
 /* ─────────────────────────────────────────
