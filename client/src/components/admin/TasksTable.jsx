@@ -59,16 +59,15 @@ const TasksTable = ({ tasks, onEdit, onRefresh }) => {
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full border-collapse" style={{ fontSize: '13.5px' }}>
+      <table className="w-full border-collapse" style={{ fontSize: '13.5px', tableLayout: 'fixed' }}>
         <thead>
           <tr>
-            <th className="table-th" style={{ width: '26%' }}>Title</th>
-            <th className="table-th" style={{ width: '11%' }}>Status</th>
-            <th className="table-th" style={{ width: '9%' }}>Points</th>
-            <th className="table-th" style={{ width: '17%' }}>Assigned To</th>
-            <th className="table-th" style={{ width: '12%' }}>Due Date</th>
-            <th className="table-th" style={{ width: '12%' }}>Created</th>
-            <th className="table-th" style={{ width: '13%' }}>Actions</th>
+            <th className="table-th" style={{ width: '30%' }}>Title</th>
+            <th className="table-th" style={{ width: '12%' }}>Status</th>
+            <th className="table-th" style={{ width: '18%' }}>Assigned To</th>
+            <th className="table-th" style={{ width: '13%' }}>Due Date</th>
+            <th className="table-th" style={{ width: '13%' }}>Created</th>
+            <th className="table-th" style={{ width: '14%' }}>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -112,9 +111,9 @@ const TasksTable = ({ tasks, onEdit, onRefresh }) => {
               {/* Assigned to */}
               <td className="table-td" style={{ whiteSpace: 'nowrap' }}>
                 {task.assignedTo ? (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
                     <Avatar name={task.assignedTo.name} src={task.assignedTo.avatarUrl} size={26} fontSize={11} />
-                    <span style={{ color: 'var(--text-secondary)' }}>{task.assignedTo.name}</span>
+                    <span className="truncate" style={{ color: 'var(--text-secondary)' }}>{task.assignedTo.name}</span>
                   </div>
                 ) : (
                   <span style={{ color: 'var(--text-muted)', fontSize: '13px' }}>Unassigned</span>

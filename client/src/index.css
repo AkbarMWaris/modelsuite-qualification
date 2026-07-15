@@ -419,6 +419,7 @@ body {
   padding: 14px 18px;
   border-bottom: 1px solid var(--border);
   vertical-align: middle;
+  overflow:hidden;
 }
 
 .table-row {
