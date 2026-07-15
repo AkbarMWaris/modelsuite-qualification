@@ -26,6 +26,13 @@ const IconUpload = () => (
   </svg>
 );
 
+/* ── Bounty / reward icon ── */
+const IconBounty = () => (
+  <svg width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M10 2l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z" />
+  </svg>
+);
+
 const fmtDate = (raw) => {
   if (!raw) return null;
   try {
@@ -68,10 +75,18 @@ const MyTasksList = ({ tasks, onRefresh, emptyMessage }) => {
 
             {/* Task info */}
             <div className="flex-1 min-w-0">
-              <p className="font-semibold truncate mb-0.5"
-                style={{ fontSize: '13.5px', color: 'var(--text-secondary)', fontFamily: 'Inter, sans-serif' }}>
-                {task.title || 'Untitled Task'}
-              </p>
+              <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                <p className="font-semibold truncate"
+                  style={{ fontSize: '13.5px', color: 'var(--text-secondary)', fontFamily: 'Inter, sans-serif' }}>
+                  {task.title || 'Untitled Task'}
+                </p>
+                {task.bounty > 0 && (
+                  <span className="task-bounty-tag" style={{ fontSize: '10.5px', padding: '2px 7px' }}>
+                    <IconBounty />
+                    {task.bounty} pts
+                  </span>
+                )}
+              </div>
               {fmtDate(task.dueDate) && (
                 <p className="flex items-center gap-1.5 text-[11.5px]" style={{ color: 'var(--text-muted)' }}>
                   <IconCalendar />

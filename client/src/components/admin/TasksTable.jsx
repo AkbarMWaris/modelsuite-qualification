@@ -62,12 +62,13 @@ const TasksTable = ({ tasks, onEdit, onRefresh }) => {
       <table className="w-full border-collapse" style={{ fontSize: '13.5px' }}>
         <thead>
           <tr>
-            <th className="table-th">Title</th>
-            <th className="table-th">Status</th>
-            <th className="table-th">Assigned To</th>
-            <th className="table-th">Due Date</th>
-            <th className="table-th">Created</th>
-            <th className="table-th">Actions</th>
+            <th className="table-th" style={{ width: '26%' }}>Title</th>
+            <th className="table-th" style={{ width: '11%' }}>Status</th>
+            <th className="table-th" style={{ width: '9%' }}>Points</th>
+            <th className="table-th" style={{ width: '17%' }}>Assigned To</th>
+            <th className="table-th" style={{ width: '12%' }}>Due Date</th>
+            <th className="table-th" style={{ width: '12%' }}>Created</th>
+            <th className="table-th" style={{ width: '13%' }}>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -95,6 +96,17 @@ const TasksTable = ({ tasks, onEdit, onRefresh }) => {
                   style={{ fontFamily: 'Inter, sans-serif' }}>
                   {task.status || '—'}
                 </span>
+              </td>
+
+              {/* Points / reward */}
+              <td className="table-td">
+                {task.bounty > 0 ? (
+                <span className="task-bounty-tag" style={{ fontSize: '11px', padding: '3px 8px' }}>
+                  {task.bounty} pts
+                </span>
+                  ) : (
+                <span style={{ color: 'var(--text-faint)', fontSize: '12.5px' }}>—</span>
+                  )}
               </td>
 
               {/* Assigned to */}

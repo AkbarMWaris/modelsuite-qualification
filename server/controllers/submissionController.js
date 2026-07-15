@@ -84,7 +84,6 @@ const reviewSubmission = async (req, res) => {
   const { reviewStatus } = req.body;
 
   try {
-    // — any string is accepted and stored
     const submission = await Submission.findByIdAndUpdate(
       req.params.id,
       { reviewStatus },
@@ -96,8 +95,14 @@ const reviewSubmission = async (req, res) => {
     if (!submission) {
       return res.status(404).json({ message: 'Submission not found' });
     }
-    // — task stays 'Submitted' even after the submission is Approved/Rejected
-    // Proper flow: also update Task.status to 'Approved'/'Rejected'
+
+    // Keep the Task's own status in sync with the review decision — this is
+    // what everything downstream (the admin task table, the talent's reward
+    // totals) actually reads from, so without this the task would stay
+    // stuck on "Submitted" forever even after being approved or rejected.
+    if (reviewStatus === 'Approved' || reviewStatus === 'Rejected') {
+      await Task.findByIdAndUpdate(submission.taskId._id, { status: reviewStatus });
+    }
 
     res.json(submission);
   } catch (error) {

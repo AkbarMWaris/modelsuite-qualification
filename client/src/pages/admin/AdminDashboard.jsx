@@ -158,16 +158,17 @@ const AdminDashboard = () => {
               <table className="w-full border-collapse" style={{ fontSize: '13.5px' }}>
                 <thead>
                   <tr>
-                    <th className="table-th">Title</th>
-                    <th className="table-th">Status</th>
-                    <th className="table-th">Assigned To</th>
-                    <th className="table-th">Created</th>
+                    <th className="table-th" style={{ width: '32%' }}>Title</th>
+                    <th className="table-th" style={{ width: '14%' }}>Status</th>
+                    <th className="table-th" style={{ width: '10%' }}>Points</th>
+                    <th className="table-th" style={{ width: '26%' }}>Assigned To</th>
+                    <th className="table-th" style={{ width: '18%' }}>Created</th>
                   </tr>
                 </thead>
                 <tbody>
                   {recentTasks.map((task) => (
                     <tr key={task._id} className="table-row">
-                      <td className="table-td" style={{ maxWidth: '260px' }}>
+                      <td className="table-td">
                         <span className="block font-semibold truncate"
                           style={{ color: 'var(--text-secondary)', fontFamily: 'Inter, sans-serif' }}>
                           {task.title || '—'}
@@ -178,14 +179,23 @@ const AdminDashboard = () => {
                           {task.status || '—'}
                         </span>
                       </td>
-                      <td className="table-td" style={{ whiteSpace: 'nowrap' }}>
-                        {task.assignedTo ? (
-                          <div className="flex items-center gap-2">
+                      <td className="table-td">
+                        {task.bounty > 0 ? (
+                        <span className="task-bounty-tag" style={{ fontSize: '11px', padding: '3px 8px' }}>
+                          {task.bounty} pts
+                        </span>
+                        ) : (
+                          <span style={{ color: 'var(--text-faint)', fontSize: '12.5px' }}>—</span>
+                        )}
+                      </td>
+                      <td className="table-td">
+                       {task.assignedTo ? (
+                          <div className="flex items-center gap-2 min-w-0">
                             <Avatar name={task.assignedTo.name} src={task.assignedTo.avatarUrl} size={22} fontSize={10} />
-                            <span style={{ color: 'var(--text-secondary)' }}>{task.assignedTo.name}</span>
+                            <span className="truncate" style={{ color: 'var(--text-secondary)' }}>{task.assignedTo.name}</span>
                           </div>
                         ) : (
-                          <span style={{ color: 'var(--text-muted)', fontSize: '13px' }}>Unassigned</span>
+                        <span style={{ color: 'var(--text-muted)', fontSize: '13px' }}>Unassigned</span>
                         )}
                       </td>
                       <td className="table-td" style={{ color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
